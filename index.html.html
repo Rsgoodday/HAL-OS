@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HAL OS v3</title>
+<style>
+:root{
+--bg:#000;
+--fg:#e8e8e8;
+--red:#b40000;
+--line:#282828;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+height:100vh;
+background:radial-gradient(circle at center,#080808 0%,#000 70%);
+font-family:Consolas,monospace;
+color:var(--fg);
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+}
+#panel{
+width:390px;
+padding:20px;
+}
+#header{
+display:flex;
+justify-content:space-between;
+font-size:12px;
+color:#777;
+margin-bottom:10px;
+}
+#eye{
+position:relative;
+width:190px;
+height:190px;
+margin:15px auto 20px;
+border-radius:50%;
+background:
+radial-gradient(circle at 42% 38%,rgba(255,255,255,.75) 0 4%,transparent 5%),
+radial-gradient(circle,#ff8a8a 0%,#ff2c2c 10%,#c00000 23%,#580000 45%,#130000 70%,#000 100%);
+box-shadow:
+0 0 80px rgba(255,0,0,.35),
+inset 0 0 70px rgba(255,80,80,.25),
+inset 0 0 12px rgba(255,255,255,.25);
+animation:breathe 7s ease-in-out infinite;
+cursor:pointer;
+}
+#eye:before{
+content:"";
+position:absolute;
+inset:16px;
+border-radius:50%;
+border:2px solid rgba(120,0,0,.6);
+}
+#eye:after{
+content:"";
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:26px;
+height:26px;
+border-radius:50%;
+background:#fff;
+opacity:.85;
+box-shadow:0 0 25px #ff4040;
+}
+@keyframes breathe{
+0%,100%{transform:scale(1);filter:brightness(.78)}
+50%{transform:scale(1.04);filter:brightness(1.25)}
+}
+h1{
+text-align:center;
+font-weight:400;
+letter-spacing:6px;
+margin:0;
+}
+#state{
+text-align:center;
+color:#d04040;
+margin:10px 0 25px;
+letter-spacing:2px;
+transition:.4s;
+}
+.row{
+display:flex;
+justify-content:space-between;
+padding:16px 2px;
+border-top:1px solid var(--line);
+}
+.label{color:#888;font-size:12px;}
+.value{font-size:22px;}
+#log{
+margin-top:24px;
+padding-top:14px;
+border-top:1px solid var(--line);
+font-size:13px;
+color:#8d8d8d;
+min-height:40px;
+}
+</style>
+</head>
+<body>
+<div id="panel">
+<div id="header">
+<span>HAL OS 0.3</span>
+<span id="clock"></span>
+</div>
+
+<div id="eye"></div>
+
+<h1>HAL 9000</h1>
+<div id="state">SYSTEM ONLINE</div>
+
+<div class="row"><span class="label">TEMPERATURE</span><span class="value" id="t">22.4 °C</span></div>
+<div class="row"><span class="label">HUMIDITY</span><span class="value" id="h">46 %</span></div>
+<div class="row"><span class="label">NETWORK</span><span class="value">CONNECTED</span></div>
+
+<div id="log"></div>
+</div>
+
+<script>
+const messages=[
+"REMOTE LINK ESTABLISHED",
+"ALL SYSTEMS NOMINAL",
+"MONITORING ENVIRONMENT",
+"SENSOR UPDATE RECEIVED",
+"HAL READY"
+];
+
+function tick(){
+clock.textContent=new Date().toLocaleTimeString();
+}
+setInterval(tick,1000);tick();
+
+let i=0;
+function nextLog(){
+log.textContent=new Date().toLocaleTimeString()+"  ·  "+messages[i];
+i=(i+1)%messages.length;
+}
+setInterval(nextLog,5000);
+nextLog();
+
+eye.onclick=()=>{
+state.textContent="COMMAND RECEIVED";
+eye.animate([
+{transform:"scale(1)"},
+{transform:"scale(1.08)",filter:"brightness(1.6)"},
+{transform:"scale(1)"}
+],{duration:900});
+setTimeout(()=>state.textContent="SYSTEM ONLINE",1400);
+};
+</script>
+</body>
+</html>
