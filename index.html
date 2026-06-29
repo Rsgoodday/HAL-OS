@@ -1,55 +1,66 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAL OS</title>
-
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HAL OS</title>
+<style>
+body{margin:0;background:#000;color:#eee;font-family:Consolas,monospace;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background:
+radial-gradient(circle,#111 0,#000 72%),
+repeating-linear-gradient(to bottom,transparent 0 22px,rgba(255,255,255,.02)23px)}
+.wrap{max-width:390px;height:100vh;margin:auto;display:flex;flex-direction:column;justify-content:center;padding:18px;position:relative}
+.eye{width:270px;height:270px;margin:0 auto 12px;border-radius:50%;cursor:pointer;
+background:
+radial-gradient(circle at 35% 28%,rgba(255,255,255,.95)0 2%,transparent 4%),
+radial-gradient(circle,#fff,#ff8c8c 6%,#e00000 16%,#7a0000 40%,#180000 68%,#000);
+box-shadow:0 0 220px rgba(255,0,0,.45),inset 0 0 120px rgba(255,180,180,.18);
+animation:breathe 6s ease-in-out infinite}
+@keyframes breathe{
+0%,100%{transform:scale(1);filter:brightness(.85)}
+50%{transform:scale(1.05);filter:brightness(1.3)}
+}
+.small{text-align:center;color:#888;letter-spacing:3px;font-size:12px}
+h1{text-align:center;font-weight:400;letter-spacing:8px;margin:6px 0}
+#status{text-align:center;color:#d55;margin-bottom:18px;letter-spacing:2px}
+.row{display:flex;justify-content:space-between;border-top:1px solid #222;padding:14px 0}
+.nav{display:flex;justify-content:center;gap:12px;margin:16px 0}
+.dot{width:8px;height:8px;border-radius:50%;background:#444}
+.dot:first-child{background:#d22;box-shadow:0 0 8px #d22}
+#log{border-top:1px solid #222;padding-top:10px;color:#888;font-size:13px;min-height:20px}
+</style>
 </head>
-
 <body>
-
-<div class="background"></div>
-
-<div class="container">
-
-    <div id="eye"></div>
-
-    <div class="screen-title">HOME</div>
-
-    <h1>HAL 9000</h1>
-
-    <div id="status">
-        REMOTE LINK ACTIVE
-    </div>
-
-    <div class="info">
-        <span>TEMPERATURE</span>
-        <span id="temp">22.4 °C</span>
-    </div>
-
-    <div class="info">
-        <span>HUMIDITY</span>
-        <span id="hum">46 %</span>
-    </div>
-
-    <div class="info">
-        <span>TIME</span>
-        <span id="clock"></span>
-    </div>
-
-    <div class="navigation">
-        <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-    </div>
-
-    <div id="console"></div>
-
+<div class="wrap">
+<div class="eye" id="eye"></div>
+<div class="small">HOME</div>
+<h1>HAL 9000</h1>
+<div id="status">REMOTE LINK ACTIVE</div>
+<div class="row"><span>TEMPERATURE</span><span id="temp">22.4 °C</span></div>
+<div class="row"><span>HUMIDITY</span><span id="hum">46 %</span></div>
+<div class="row"><span>TIME</span><span id="clock"></span></div>
+<div class="nav"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div id="log"></div>
 </div>
-
-<script src="app.js"></script>
-
+<script>
+const msgs=["REMOTE LINK ESTABLISHED","ALL SYSTEMS NOMINAL","ENVIRONMENT MONITORING","HAL READY"];
+let mi=0,t=22.4,h=46;
+function tick(){clock.textContent=new Date().toLocaleTimeString();}
+tick();setInterval(tick,1000);
+function log(){document.getElementById("log").textContent=new Date().toLocaleTimeString()+" · "+msgs[mi];mi=(mi+1)%msgs.length;}
+log();setInterval(log,3000);
+setInterval(()=>{
+t+=(Math.random()-.5)*0.2;
+h+=(Math.random()-.5);
+temp.textContent=t.toFixed(1)+" °C";
+hum.textContent=Math.round(h)+" %";
+},5000);
+eye.onclick=()=>{
+status.textContent="AUTHENTICATING...";
+eye.animate([{transform:"scale(1)"},{transform:"scale(1.08)"},{transform:"scale(1)"}],{duration:800});
+setTimeout(()=>status.textContent="COMMAND ACCEPTED",700);
+setTimeout(()=>status.textContent="REMOTE LINK ACTIVE",1700);
+};
+</script>
 </body>
 </html>
