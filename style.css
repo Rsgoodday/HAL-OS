@@ -1,1 +1,229 @@
+:root{
+    --bg:#000000;
+    --panel:#111111;
+    --text:#EAEAEA;
+    --secondary:#8a8a8a;
+    --line:#262626;
+    --red:#d00000;
+}
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    background:#000;
+    color:var(--text);
+
+    font-family:Consolas, monospace;
+
+    overflow:hidden;
+
+}
+
+.background{
+
+    position:fixed;
+    inset:0;
+
+    background:
+
+        radial-gradient(circle,#111 0%,#000 72%),
+
+        repeating-linear-gradient(
+
+            to bottom,
+
+            transparent 0px,
+
+            transparent 22px,
+
+            rgba(255,255,255,.02)23px
+
+        );
+
+}
+
+.container{
+
+    position:relative;
+
+    max-width:390px;
+
+    margin:auto;
+
+    height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    padding:20px;
+
+}
+
+#eye{
+
+    width:270px;
+    height:270px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:
+
+    radial-gradient(circle at 34% 26%,
+
+        rgba(255,255,255,.95)0%,
+
+        rgba(255,255,255,.95)2%,
+
+        transparent 4%),
+
+    radial-gradient(circle,
+
+        #fff,
+
+        #ff8f8f 6%,
+
+        #e00000 15%,
+
+        #7a0000 40%,
+
+        #180000 68%,
+
+        #000 100%);
+
+    box-shadow:
+
+        0 0 220px rgba(255,0,0,.50),
+
+        inset 0 0 120px rgba(255,180,180,.18);
+
+    animation:breathe 6s ease-in-out infinite;
+
+}
+
+@keyframes breathe{
+
+    0%,100%{
+
+        transform:scale(1);
+
+        filter:brightness(.85);
+
+    }
+
+    50%{
+
+        transform:scale(1.05);
+
+        filter:brightness(1.30);
+
+    }
+
+}
+
+.screen-title{
+
+    text-align:center;
+
+    color:var(--secondary);
+
+    font-size:12px;
+
+    letter-spacing:4px;
+
+    margin-top:10px;
+
+}
+
+h1{
+
+    text-align:center;
+
+    font-weight:400;
+
+    letter-spacing:8px;
+
+    margin:8px 0;
+
+}
+
+#status{
+
+    text-align:center;
+
+    color:#d55;
+
+    margin-bottom:20px;
+
+    letter-spacing:2px;
+
+}
+
+.info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:14px 0;
+
+    border-top:1px solid var(--line);
+
+}
+
+.navigation{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+    margin:18px 0;
+
+}
+
+.dot{
+
+    width:8px;
+
+    height:8px;
+
+    border-radius:50%;
+
+    background:#444;
+
+}
+
+.active{
+
+    background:var(--red);
+
+    box-shadow:0 0 10px var(--red);
+
+}
+
+#console{
+
+    border-top:1px solid var(--line);
+
+    padding-top:10px;
+
+    color:var(--secondary);
+
+    font-size:13px;
+
+    min-height:22px;
+
+}
