@@ -1,1 +1,64 @@
-<!doctype html><html><body style='background:#000;color:#fff;font-family:monospace'><h1>HAL 9000</h1><p>SYSTEM NOMINAL</p></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HAL OS</title>
+<style>
+body{margin:0;background:#000;color:#eee;font-family:Consolas,monospace;display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle,#111,#000 72%),repeating-linear-gradient(to bottom,transparent 0 22px,rgba(255,255,255,.02)23px)}
+.wrap{width:390px;padding:20px;position:relative}
+.eye{width:260px;height:260px;margin:0 auto 15px;border-radius:50%;
+background:radial-gradient(circle at 35% 28%,#fff 0 2%,transparent 4%),radial-gradient(circle,#fff,#ff8c8c 6%,#d00000 16%,#700000 40%,#180000 68%,#000);
+box-shadow:0 0 180px rgba(255,0,0,.5),inset 0 0 100px rgba(255,180,180,.2);
+animation:breathe 6s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.05);filter:brightness(1.3)}}
+.small{text-align:center;color:#888;font-size:12px;letter-spacing:3px}
+h1{text-align:center;letter-spacing:8px;font-weight:400;margin:6px 0}
+#status{text-align:center;color:#d55;margin-bottom:20px}
+.row{display:flex;justify-content:space-between;border-top:1px solid #222;padding:14px 0}
+#log{border-top:1px solid #222;padding-top:10px;color:#888;font-size:13px;min-height:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="eye"></div>
+<div class="small">HOME</div>
+<h1>HAL 9000</h1>
+<div id="status">CONNECTING...</div>
+<div class="row"><span>TEMPERATURE</span><span id="temp">--.- °C</span></div>
+<div class="row"><span>HUMIDITY</span><span id="hum">-- %</span></div>
+<div class="row"><span>TIME</span><span id="clock"></span></div>
+<div id="log"></div>
+</div>
+<script>
+const ESP32_URL="http://192.168.1.100";
+const temp=document.getElementById("temp");
+const hum=document.getElementById("hum");
+const statusEl=document.getElementById("status");
+const log=document.getElementById("log");
+const clock=document.getElementById("clock");
+setInterval(()=>clock.textContent=new Date().toLocaleTimeString(),1000);
+clock.textContent=new Date().toLocaleTimeString();
+
+async function updateSensors(){
+ try{
+   const r=await fetch(ESP32_URL+"/status",{cache:"no-cache"});
+   if(!r.ok) throw new Error();
+   const d=await r.json();
+   temp.textContent=Number(d.temperature).toFixed(1)+" °C";
+   hum.textContent=Math.round(d.humidity)+" %";
+   statusEl.textContent="ONLINE";
+   log.textContent=new Date().toLocaleTimeString()+" · SENSOR UPDATE RECEIVED";
+ }catch(e){
+   statusEl.textContent="OFFLINE";
+   temp.textContent="--.- °C";
+   hum.textContent="-- %";
+   log.textContent=new Date().toLocaleTimeString()+" · WAITING FOR ESP32";
+ }
+}
+updateSensors();
+setInterval(updateSensors,2000);
+</script>
+</body>
+</html>
