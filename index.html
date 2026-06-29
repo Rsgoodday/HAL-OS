@@ -1,1 +1,22 @@
-<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>HAL OS</title><style>body{margin:0;background:#000;color:#eee;font-family:Consolas,monospace;display:flex;justify-content:center;align-items:center;height:100vh}#e{width:200px;height:200px;border-radius:50%;margin:auto;background:radial-gradient(circle,#ff9999,#c00000,#000);box-shadow:0 0 80px #900;animation:b 6s infinite} @keyframes b{50%{transform:scale(1.05);filter:brightness(1.3)}}.p{width:380px;text-align:center}.r{display:flex;justify-content:space-between;border-top:1px solid #222;padding:12px 0}</style></head><body><div class='p'><div id='e'></div><h1>HAL 9000</h1><div id='s'>REMOTE LINK ACTIVE</div><div class='r'><span>TEMPERATURE</span><span>22.4 °C</span></div><div class='r'><span>HUMIDITY</span><span>46 %</span></div><div class='r'><span>NETWORK</span><span>CONNECTED</span></div><p id='c'></p></div><script>setInterval(()=>c.textContent=new Date().toLocaleTimeString(),1000);e.onclick=()=>{s.textContent='COMMAND ACCEPTED';setTimeout(()=>s.textContent='REMOTE LINK ACTIVE',1200)}</script></body></html>
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>HAL OS</title><style>
+body{margin:0;background:#000;color:#eee;font-family:Consolas,monospace;height:100vh;display:flex;justify-content:center;align-items:center;overflow:hidden}
+#bg{position:fixed;inset:0;background:radial-gradient(circle,#111 0,#000 70%)}
+#scan{position:fixed;left:0;top:-100%;width:100%;height:100%;background:linear-gradient(to bottom,transparent,rgba(255,0,0,.05),transparent);animation:s 7s linear infinite}
+@keyframes s{to{transform:translateY(200vh)}}
+.panel{width:390px;z-index:1}
+.eye{width:220px;height:220px;margin:10px auto 20px;border-radius:50%;background:
+radial-gradient(circle at 38% 34%,#fff8 0 4%,transparent 5%),
+radial-gradient(circle,#ffb5b5,#ff3b3b 8%,#c00000 22%,#5a0000 45%,#120000 70%,#000);
+box-shadow:0 0 90px #900,inset 0 0 80px #f4433633;animation:b 6s ease-in-out infinite}
+@keyframes b{50%{transform:scale(1.05);filter:brightness(1.3)}}
+h1{text-align:center;letter-spacing:6px;font-weight:400}
+.state{text-align:center;color:#d55;margin:10px 0 20px}
+.row{display:flex;justify-content:space-between;border-top:1px solid #222;padding:14px 0}
+.log{margin-top:18px;color:#888;font-size:13px;border-top:1px solid #222;padding-top:12px}
+</style></head><body><div id='bg'></div><div id='scan'></div><div class='panel'><div class='eye'></div><h1>HAL 9000</h1><div class='state' id='st'>REMOTE LINK ACTIVE</div><div class='row'><span>TEMPERATURE</span><span id='t'>22.4 °C</span></div><div class='row'><span>HUMIDITY</span><span id='h'>46 %</span></div><div class='row'><span>TIME</span><span id='c'></span></div><div class='log' id='log'></div></div><script>
+const m=['ALL SYSTEMS NOMINAL','ENVIRONMENT MONITORING','REMOTE LINK ESTABLISHED','HAL READY'];let i=0;
+setInterval(()=>c.textContent=new Date().toLocaleTimeString(),1000);
+setInterval(()=>{log.textContent=new Date().toLocaleTimeString()+' · '+m[i];i=(i+1)%m.length;},3500);
+c.textContent=new Date().toLocaleTimeString();log.textContent=m[0];
+</script></body></html>
